@@ -1,0 +1,180 @@
+/* IMPORT FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --safari-green: #2c5e2e;
+    --safari-gold: #d4a017;
+    --safari-dark: #1a1a1a;
+    --safari-light: #f4f4f4;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--safari-light);
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+}
+
+/* --- NAVBAR STYLING --- */
+.navbar {
+    background-color: rgba(20, 40, 20, 0.95) !important; /* Semi-transparent dark green */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    color: var(--safari-gold) !important;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* --- HERO SECTION (The Big Image) --- */
+.hero-section {
+    position: relative;
+    height: 80vh; /* 80% of the screen height */
+    background: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    margin-top: -20px; /* Pull it up under the navbar if needed */
+}
+
+/* Dark overlay so text pops */
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+/* --- BUTTON ANIMATIONS --- */
+.btn-safari {
+    background-color: var(--safari-gold);
+    color: var(--safari-dark);
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-safari:hover {
+    background-color: #bfa15f;
+    transform: translateY(-3px); /* Moves up slightly */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Adds shadow */
+}
+
+/* --- CARD HOVER EFFECTS --- */
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* --- FORM STYLING --- */
+.form-control:focus, .form-select:focus {
+    border-color: var(--safari-green);
+    box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.25);
+}
+
+.card-header-safari {
+    background-color: var(--safari-green);
+    color: var(--safari-gold);
+    font-family: 'Lora', serif;
+    font-weight: bold;
+    border-bottom: 2px solid var(--safari-gold);
+}
+
+/* --- TABLE STYLING --- */
+.table-safari thead {
+    background-color: var(--safari-dark);
+    color: var(--safari-gold);
+    font-family: 'Lora', serif;
+}
+
+.table-safari tbody tr:hover {
+    background-color: rgba(212, 160, 23, 0.1); /* Light gold hover */
+    transition: background-color 0.3s ease;
+}
+
+/* --- CHAT STYLING --- */
+.chat-container {
+    background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Subtle texture */
+    background-color: #f0f4f0;
+}
+
+.message-bubble {
+    padding: 12px 18px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.msg-sent {
+    background-color: var(--safari-green);
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+.msg-received {
+    background-color: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 2px;
+}
+
+.msg-meta {
+    font-size: 0.7rem;
+    margin-top: 4px;
+    display: block;
+    opacity: 0.8;
+    text-align: right;
+}
+
+/* Blue ticks for read receipts */
+.tick-read { color: #4fc3f7; font-weight: bold; }
+.tick-delivered { color: #ccc; }

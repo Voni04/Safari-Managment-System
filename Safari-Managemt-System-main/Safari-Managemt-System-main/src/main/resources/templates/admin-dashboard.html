@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Safari Admin</a>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-danger btn-sm ms-2">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2>Operational Dashboard</h2>
+
+    <div th:if="${param.assigned}" class="alert alert-success alert-dismissible fade show">
+        <strong>Success!</strong> Resources have been assigned.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${param.replySuccess}" class="alert alert-success alert-dismissible fade show">
+        <strong>Success!</strong> Reply posted successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${param.replyDeleted}" class="alert alert-warning alert-dismissible fade show">
+        <strong>Reply Deleted.</strong> The admin response has been removed.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="row mb-4 mt-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3 shadow">
+                <div class="card-header">Total Revenue</div>
+                <div class="card-body">
+                    <h2 class="card-title">$<span th:text="${totalRevenue}">0.00</span></h2>
+                    <p class="card-text">From confirmed bookings.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3 shadow">
+                <div class="card-header">Confirmed Trips</div>
+                <div class="card-body">
+                    <h2 class="card-title" th:text="${confirmedCount}">0</h2>
+                    <p class="card-text">Paid and ready to go.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-warning mb-3 shadow">
+                <div class="card-header text-dark">Pending Payments</div>
+                <div class="card-body text-dark">
+                    <h2 class="card-title" th:text="${pendingCount}">0</h2>
+                    <p class="card-text">Awaiting payment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-5">
+        <div class="card-header bg-dark text-white">
+            <strong>Assign Guides & Vehicles</strong>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Tourist</th>
+                    <th>Package</th>
+                    <th>Date</th>
+                    <th>Assign Guide</th>
+                    <th>Assign Vehicle</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="booking : ${bookings}">
+                    <td th:text="${booking.id}"></td>
+                    <td th:text="${booking.user.username}"></td>
+                    <td th:text="${booking.safariPackage.packageName}"></td>
+                    <td th:text="${booking.bookingDate}"></td>
+
+                    <td colspan="3">
+                        <form th:action="@{/admin/assign}" method="post" class="row g-2">
+                            <input type="hidden" name="bookingId" th:value="${booking.id}">
+
+                            <div class="col-auto">
+                                <select name="guideId" class="form-select form-select-sm" required>
+                                    <option value="" selected disabled>Select Guide</option>
+                                    <option th:each="guide : ${guides}"
+                                            th:value="${guide.id}"
+                                            th:text="${guide.firstName} + ' ' + ${guide.lastName}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <select name="vehicleId" class="form-select form-select-sm" required>
+                                    <option value="" selected disabled>Select Vehicle</option>
+                                    <option th:each="vehicle : ${vehicles}"
+                                            th:value="${vehicle.id}"
+                                            th:text="${vehicle.model} + ' (' + ${vehicle.plateNumber} + ')'">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-dark btn-sm">Assign</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${bookings.empty}">
+                    <td colspan="7" class="text-center text-muted">No confirmed bookings waiting for assignment.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow mb-5">
+        <div class="card-header bg-info text-dark">
+            <strong>Customer Feedback & Reviews</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Admin Response</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="fb : ${feedbacks}">
+                    <td th:text="${fb.booking.id}"></td>
+                    <td th:text="${fb.rating} + ' ⭐'"></td>
+                    <td th:text="${fb.comments}"></td>
+
+                    <td>
+                        <div th:if="${fb.adminReply != null}" class="d-flex justify-content-between align-items-center">
+                            <span th:text="${fb.adminReply}" class="text-success fst-italic"></span>
+
+                            <form th:action="@{/admin/feedback/reply/delete}" method="post" style="display:inline;">
+                                <input type="hidden" name="feedbackId" th:value="${fb.id}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger ms-2" title="Delete Reply">x</button>
+                            </form>
+                        </div>
+
+                        <div th:if="${fb.adminReply == null}">
+                            <form th:action="@{/admin/feedback/reply}" method="post" class="d-flex gap-2">
+                                <input type="hidden" name="feedbackId" th:value="${fb.id}">
+                                <input type="text" name="reply" class="form-control form-control-sm" placeholder="Write reply..." required>
+                                <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

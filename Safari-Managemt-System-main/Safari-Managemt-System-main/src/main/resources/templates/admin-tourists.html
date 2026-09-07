@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Tourists</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Safari Admin</a>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-danger btn-sm ms-2">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2>Registered Tourists</h2>
+    <p>View personal details and communicate with registered tourists.</p>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tourist : ${tourists}">
+                    <td th:text="${tourist.id}"></td>
+                    <td th:text="${tourist.username}"></td>
+                    <td th:text="${tourist.firstName}"></td>
+                    <td th:text="${tourist.lastName}"></td>
+                    <td th:text="${tourist.email}"></td>
+                    <td>
+                        <a th:href="@{/admin/messages(tourist=${tourist.username})}"
+                           class="btn btn-primary btn-sm position-relative">
+                            Message
+
+                            <span th:if="${unreadCounts.get(tourist.username) > 0}"
+                                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span th:text="${unreadCounts.get(tourist.username)}"></span>
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
